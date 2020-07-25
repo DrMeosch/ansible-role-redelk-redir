@@ -6,7 +6,12 @@ Role that helps setting up redirectors for RedELK project.
 
 ## Requirements
 
-None.
+	- src: robertdebock.epel
+	- src: geerlingguy.filebeat
+	- src: https://github.com/DrMeosch/ansible-role-python3
+	  scm: git
+	  version: master
+	  name: drmeosch.python3
 
 ## Role Variables
 
@@ -37,15 +42,6 @@ Available variables are listed below, along with default values (see `defaults/m
 
 	# Your timezone
 	timezone: Europe/Berlin
-
-## Dependencies
-
-	- src: robertdebock.epel
-	- src: geerlingguy.filebeat
-	- src: https://github.com/DrMeosch/ansible-role-python3
-	  scm: git
-	  version: master
-	  name: drmeosch.python3
 
 ## Use with Ansible
 
