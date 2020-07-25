@@ -1,5 +1,7 @@
 # Ansible Role: redelk_redir
 
+[![Build Status](https://travis-ci.com/DrMeosch/ansible-role-redelk-redir.svg?branch=master)](https://travis-ci.com/DrMeosch/ansible-role-redelk-redir)
+
 Role that helps setting up redirectors for RedELK project.
 
 ## Requirements
