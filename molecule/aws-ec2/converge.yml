@@ -2,7 +2,14 @@
 - name: Converge
   hosts: redirectors
   become: true
+
+  pre_tasks:
+    - name: Update apt cache.
+      apt:
+        update_cache: true
+      when: ansible_os_family == 'Debian'
+ 
   tasks:
-    - name: "Include redelk.redir role"
+    - name: "Include redelk_redir role"
       include_role:
-        name: "redelk.redir"
+        name: "ansible-role-redelk-redir"
