@@ -21,6 +21,9 @@
       tags:
         - molecule-idempotence-notest
 
+- name: flush handlers
+  meta: flush_handlers
+
 - name: Configure timezone
   timezone:
     name: "{{ timezone }}"
