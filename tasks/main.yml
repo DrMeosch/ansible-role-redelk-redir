@@ -1,0 +1,40 @@
+---
+# Setup/install tasks.
+- include_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install common packages
+  package:
+    name: "{{ pkgs }}"
+    state: present
+
+- name: include filebeat role
+  vars:
+    filebeat_create_config: false
+    filebeat_version: 6.x
+  include_role:
+    name: geerlingguy.filebeat
+    apply:
+      tags:
+        - molecule-idempotence-notest
+
+- name: Configure timezone
+  timezone:
+    name: "{{ timezone }}"
+  notify: timezone changed
+
+- name: set {{ locale }} as default locale
+  command: "localectl set-locale LANG=\"{{ locale }}\""
+  when: ansible_env.LANG != locale
+  ignore_errors: true
+  tags:
+    - molecule-idempotence-notest
+
+# Configure firewall
+- import_tasks: firewall.yml
+
+# Configure redirector
+- import_tasks: filebeat.yml

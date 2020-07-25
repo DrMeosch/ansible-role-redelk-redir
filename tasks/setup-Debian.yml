@@ -1,0 +1,4 @@
+---
+- name: Prepare list of pkgs for all systems
+  set_fact:
+    pkgs: "{{ common_pkgs + debian_pkgs }}"

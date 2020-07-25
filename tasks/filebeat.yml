@@ -1,0 +1,53 @@
+---
+- name: set cwd for molecule testing
+  set_fact:
+    cwd: ""
+  when: cwd is not defined
+
+- name: check if template filebeat is in place
+  # need for molecule testing
+  shell: cat /etc/filebeat/filebeat.yml
+  register: fb
+  tags:
+    - molecule-idempotence-notest
+  changed_when: false
+
+- name: copying filebeat configuration file
+  copy:
+    backup: true
+    # force: true
+    dest: "/etc/filebeat/filebeat.yml"
+    src: "{{ cwd }}redirs/filebeat/filebeat.yml"
+  notify: restart filebeat
+  when: (fb is defined and fb.stdout.find("redirtraffic") != -1)
+
+- name: change name in filebeat.yml
+  lineinfile:
+    path: "/etc/filebeat/filebeat.yml"
+    line: 'name: "{{ inventory_hostname }}"'
+    regexp: '^name:\s'
+    state: present
+  notify: restart filebeat
+
+- name: change attackscenario in filebeat.yml
+  lineinfile:
+    regexp: '^\s\sattackscenario:\s'
+    line: '  attackscenario: {{ attackscenario }}'
+    path: "/etc/filebeat/filebeat.yml"
+    state: present
+  notify: restart filebeat
+
+- name: change host of elkserver in filebeat.yml
+  lineinfile:
+    regexp: '^\s\shosts:\s'
+    line: '  hosts: ["{{ elkserver_hosts }}"]'
+    path: "/etc/filebeat/filebeat.yml"
+    state: present
+  notify: restart filebeat
+
+- name: copy ca file for filebeat
+  copy:
+    src: "{{ cwd }}redirs/filebeat/redelkCA.crt"
+    dest: "/etc/filebeat/redelkCA.crt"
+    backup: true
+  notify: restart filebeat

@@ -1,0 +1,33 @@
+---
+- name: Setup epel repository for non-Amazon boxes
+  include_role:
+    name: robertdebock.epel
+  when: ansible_distribution != "Amazon"
+
+- name: Setting up Amazon Linux 2 to use extra repositories
+  block:
+    - name: Check if epel repo is enabled
+      shell: "amazon-linux-extras list | grep epel"
+      register: epel_hint
+      changed_when: false
+
+    - name: Enable epel repo
+      shell: "amazon-linux-extras enable epel"
+      when: epel_hint.stdout.find("enabled") == -1
+
+    - name: Check if nginx repo is enabled
+      shell: "amazon-linux-extras list | grep nginx"
+      register: nginx_hint
+      changed_when: false
+
+    - name: Enable nginx repo
+      shell: "amazon-linux-extras enable nginx1"
+      when: nginx_hint.stdout.find("enabled") == -1
+
+  when:
+    - ansible_distribution == "Amazon"
+    - ansible_distribution_version == "2"
+
+- name: prepare list of pkgs
+  set_fact:
+    pkgs: "{{ common_pkgs + rhel_pkgs }}"

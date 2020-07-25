@@ -1,0 +1,28 @@
+---
+- name: Configure firewall
+  block:
+    - name: install firewalld package
+      package:
+        name: firewalld
+
+    - name: enable and start firewalld if needed
+      service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: open ports on redirector
+      firewalld:
+        port: "{{ item }}"
+        state: enabled
+        immediate: true
+        permanent: true
+      loop: "{{ firewall.redir_ports }}"
+      when:
+        - inventory_hostname in groups['redirectors']
+  when: >
+    (not no_firewalling | bool)
+    and
+    (ansible_distribution != "Amazon"
+    or
+    (ansible_distribution == "Amazon" and ansible_distribution_version == "2"))

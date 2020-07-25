@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: redirectors
+  become: true
+  tasks:
+    - name: "Include redelk.redir role"
+      include_role:
+        name: "redelk.redir"

@@ -1,0 +1,12 @@
+---
+- src: robertdebock.epel
+
+- src: https://github.com/DrMeosch/ansible-role-python3
+  scm: git
+  version: master
+  name: drmeosch.python3
+
+- src: https://github.com/DrMeosch/ansible-role-docker.git
+  scm: git
+  version: add-amazon
+  name: geerlingguy.docker-amazon

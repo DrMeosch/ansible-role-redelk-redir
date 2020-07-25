@@ -1,0 +1,26 @@
+# Place you redirectors here alone with attackscenario var
+[redirectors]
+
+# Your c2 servers running cobalt strike
+[c2cobaltstrike]
+
+# Your c2 servers running poshc2
+[c2poshc2]
+
+# Your elkserver
+[elkserver]
+
+
+# Normally you dont wanna edit anything after this line
+[c2servers]
+[c2servers:children]
+c2cobaltstrike
+c2poshc2
+
+[redirectors:vars]
+
+[c2cobaltstrike:vars]
+
+[c2poshc2:vars]
+
+[elkserver:vars]

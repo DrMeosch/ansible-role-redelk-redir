@@ -1,0 +1,14 @@
+---
+- name: timezone changed
+  # restart crond and syslog
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - "{{ 'crond' if ansible_os_family == 'RedHat' else 'cron' }}"
+    - rsyslog
+
+- name: restart filebeat
+  service:
+    name: filebeat
+    state: restarted

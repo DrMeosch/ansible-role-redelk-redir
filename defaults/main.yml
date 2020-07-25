@@ -1,0 +1,31 @@
+---
+common_pkgs:
+  - tmux
+  - rsync
+
+# pkgs for rhel
+rhel_pkgs:
+  - "{{ 'python3-policycoreutils' if (ansible_distribution_major_version | int >= 8) else 'policycoreutils-python' }}"
+  - rsyslog
+
+debian_pkgs:
+  - apt-transport-https
+  - python3-apt
+
+# Configure or not the firewall on your systems
+no_firewalling: true
+
+locale: en_US.UTF-8
+
+firewall:
+  redir_ports:
+    - 80/tcp
+    - 443/tcp
+
+# Your timezone
+timezone: Europe/Berlin
+
+# default var for molecule testing
+# should be overwritten in your playbook
+attackscenario: default
+elkserver_hosts: 127.0.0.1

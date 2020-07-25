@@ -1,0 +1,57 @@
+---
+dependency:
+  name: galaxy
+  options:
+    ignore-certs: true
+    ignore-errors: true
+    role-file: molecule/aws-ec2/requirements.yml
+    force: false
+driver:
+  name: ec2
+lint:
+  name: yamllint
+  options:
+    config-file: .yamllint
+  enabled: false
+platforms:
+  - name: bionic
+    image: ami-0d359437d1756caa8
+    instance_type: t2.micro
+    vpc_subnet_id: subnet-02ebf5900b497df1e
+    spot_price: 0.005
+    groups:
+      - ubuntu
+      - redirectors
+  - name: amz.2
+    image: ami-076431be05aaf8080
+    instance_type: t2.micro
+    vpc_subnet_id: subnet-02ebf5900b497df1e
+    spot_price: 0.005
+    groups:
+      - ec2_user
+      - redirector
+  - name: el8
+    image: ami-032025b3afcbb6b34
+    instance_type: t2.micro
+    vpc_subnet_id: subnet-02ebf5900b497df1e
+    groups:
+      - redirectors
+      - centos
+  - name: el7
+    image: ami-095e1a4d3d632d215
+    instance_type: t2.micro
+    vpc_subnet_id: subnet-02ebf5900b497df1e
+    groups:
+      - redirectors
+      - centos
+provisioner:
+  name: ansible
+  inventory:
+    links:
+      hosts: ../../tests/inventory/hosts
+      group_vars: ../../tests/inventory/group_vars/
+      host_vars: ../../tests/inventory/host_vars/
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
+  lint:
+    name: ansible-lint

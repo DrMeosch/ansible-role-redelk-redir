@@ -1,0 +1,22 @@
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Prepare system (Debian)
+      apt:
+        name:
+          - gpg-agent
+          - tzdata
+          - cron
+        update_cache: true
+        cache_valid_time: 600
+      when: ansible_os_family == 'Debian'
+
+    - name: Prepare system (RedHat)
+      yum:
+        name:
+          - cronie
+      when: ansible_os_family == 'RedHat'
+
+    - name: setup python3
+      include_role:
+        name: "drmeosch.python3"
