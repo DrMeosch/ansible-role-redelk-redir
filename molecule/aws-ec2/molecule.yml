@@ -49,8 +49,6 @@ provisioner:
   inventory:
     links:
       hosts: ../../tests/inventory/hosts
-      group_vars: ../../tests/inventory/group_vars/
-      host_vars: ../../tests/inventory/host_vars/
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
   lint:
