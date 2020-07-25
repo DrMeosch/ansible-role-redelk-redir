@@ -16,6 +16,7 @@ Role that helps setting up redirectors for RedELK project.
 ## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
+
 	# Common packages for RedHat and Debian
 	common_pkgs:
 	  - tmux
